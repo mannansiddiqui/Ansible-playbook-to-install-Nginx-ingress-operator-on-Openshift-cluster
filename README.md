@@ -78,10 +78,69 @@ It will ask for username and password to open web console enter **admin** as use
 
 Create a inventory file i.e. ```/etc/ansible/hosts```
 
-![image](https://github.com/mannansiddiqui/Ansible-playbook-to-install-Nginx-ingress-operator-on-Openshift-cluster/assets/74168188/adda1c5d-67ec-4243-8dd1-5c9246f15597)
+![14](https://github.com/mannansiddiqui/Ansible-playbook-to-install-Nginx-ingress-operator-on-Openshift-cluster/assets/74168188/adda1c5d-67ec-4243-8dd1-5c9246f15597)
 
 We will run ansible playbook on same host on which ansible is installed that will interact with Openshift cluster as we can't ssh to instance running Openshit cluster. When we run ansible playbook on same host it will interact with Openshift cluster using OC command line tool.
 
 #### Step-4: Write Ansible playbook
 
 Firstly, we need to login inside openshift cluster. To login inside Openshift cluster, ansible has **k8s_auth** module or we can use **k8s** but if we use **k8s** module then everytime we need to pass **kubeconfig** file as parameter that we can get easily from Terminal provided by Openshift Playground.
+
+Let's first use **k8s_auth** module.
+
+![15](https://github.com/mannansiddiqui/Ansible-playbook-to-install-Nginx-ingress-operator-on-Openshift-cluster/assets/74168188/627fa465-1c00-4da0-a37a-ad57cbe2c65d)
+
+```
+---
+- hosts: openshift
+  vars:
+    openshift_api_url: "https://api.crc.testing:6443" 
+    openshift_username: "admin"
+    openshift_password: "admin"
+  tasks:
+
+    - k8s_auth:
+        host: "{{ openshift_api_url }}"
+        username: "{{ openshift_username }}"
+        password: "{{ openshift_password }}"
+        validate_certs: no
+      register: k8s_auth_results
+```
+Before running this Ansible playbook we need to configure local DNS that will point **api.crc.testing** to IP of Terminal instance provided by Openshift playground in which Openshift cluster is running.
+
+To find public IP of Terminal instance run ```curl ifconfig.me```.
+
+![16](https://github.com/mannansiddiqui/Ansible-playbook-to-install-Nginx-ingress-operator-on-Openshift-cluster/assets/74168188/f70b4ae2-077d-4f3b-8759-49778f158887)
+
+Now, for local pointing edit **/etc/hosts** file.
+
+![17](https://github.com/mannansiddiqui/Ansible-playbook-to-install-Nginx-ingress-operator-on-Openshift-cluster/assets/74168188/9870ca95-d737-4522-b0b6-caf46300709c)
+
+![18](https://github.com/mannansiddiqui/Ansible-playbook-to-install-Nginx-ingress-operator-on-Openshift-cluster/assets/74168188/c156d24e-f25e-42cb-a560-3d24ff247c31)
+
+save and exit by pressing **Esc** key and enter **:wq**
+
+Now let's run ansible playbook ```ansible-playbook openshift.yml```.
+
+![19](https://github.com/mannansiddiqui/Ansible-playbook-to-install-Nginx-ingress-operator-on-Openshift-cluster/assets/74168188/44236d9e-6b8f-47be-b5b3-9a10ae28c28c)
+
+We got an dependency error. It's asking to install sshpass. Let's install sshpass in Ansible control node.
+
+![20](https://github.com/mannansiddiqui/Ansible-playbook-to-install-Nginx-ingress-operator-on-Openshift-cluster/assets/74168188/3de96aa3-ef87-4708-9c99-7b612dfa6c6f)
+
+Now, Let's try to run again.
+
+![21](https://github.com/mannansiddiqui/Ansible-playbook-to-install-Nginx-ingress-operator-on-Openshift-cluster/assets/74168188/9ab23ef8-503f-4cf2-a95f-61fc48d8df9e)
+
+Again got an error. It's saying that we are using SSH password instead of key and its not possible as Host key checking is enabled. So to diable host key checking we can add **ansible_ssh_common_args='-o StrictHostKeyChecking=no'**
+
+![22](https://github.com/mannansiddiqui/Ansible-playbook-to-install-Nginx-ingress-operator-on-Openshift-cluster/assets/74168188/60917b42-d53c-48a4-ae1e-02e89bc9458e)
+
+Now, Let's again try to run Ansible playbook.
+
+Again there is dependency error. Asking to install **requests-oauthlib** python library. Let's add this in playbook.
+
+![23](https://github.com/mannansiddiqui/Ansible-playbook-to-install-Nginx-ingress-operator-on-Openshift-cluster/assets/74168188/2e8a268e-e4b7-4c31-9dc3-ec442cc6e166)
+
+Now, Let's again try to run Ansible playbook.
+
