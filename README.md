@@ -84,3 +84,4 @@ We will run ansible playbook on same host on which ansible is installed that wil
 
 #### Step-4: Write Ansible playbook
 
+Firstly, we need to login inside openshift cluster. To login inside Openshift cluster, ansible has **k8s_auth** module or we can use **k8s** but if we use **k8s** module then everytime we need to pass **kubeconfig** file as parameter that we can get easily from Terminal provided by Openshift Playground.
