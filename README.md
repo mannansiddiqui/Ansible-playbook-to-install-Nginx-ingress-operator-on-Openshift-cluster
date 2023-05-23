@@ -243,6 +243,8 @@ As you can see Nginx ingress operator is not installed. Now let's apply this pla
 
 ![29](https://github.com/mannansiddiqui/Ansible-playbook-to-install-Nginx-ingress-operator-on-Openshift-cluster/assets/74168188/0cb897b2-22c7-41cf-8e1a-205e0142ded0)
 
+![30](https://github.com/mannansiddiqui/Ansible-playbook-to-install-Nginx-ingress-operator-on-Openshift-cluster/assets/74168188/0b5986de-a890-4cbd-9265-df321cdbc0db)
+
 It's now successfully installed.
 
 ### Thank You...
