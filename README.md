@@ -66,7 +66,7 @@ I am using Openshift payground as it's free and quick to create but it's for 1 h
 
 In Openshift plyground we get Terminal as well as Web Console.
 
-![11(https://github.com/mannansiddiqui/Ansible-playbook-to-install-Nginx-ingress-operator-on-Openshift-cluster/assets/74168188/06e43792-27e0-4940-a21b-28e932cfdd7a)
+![11](https://github.com/mannansiddiqui/Ansible-playbook-to-install-Nginx-ingress-operator-on-Openshift-cluster/assets/74168188/06e43792-27e0-4940-a21b-28e932cfdd7a)
 
 It will ask for username and password to open web console enter **admin** as username and **admin** as password to login.
 
