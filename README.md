@@ -147,3 +147,97 @@ Now, Let's again try to run Ansible playbook.
 ![24](https://github.com/mannansiddiqui/Ansible-playbook-to-install-Nginx-ingress-operator-on-Openshift-cluster/assets/74168188/fa139af8-bf27-465f-9ab3-461cfb499a6d)
 
 There is issue in RHEL9 as i already installed **requests-oauthlib** python library but still i am getting this error. Now i am using CentOS 9.
+
+In CentOS9 it works.
+
+![25](https://github.com/mannansiddiqui/Ansible-playbook-to-install-Nginx-ingress-operator-on-Openshift-cluster/assets/74168188/e45979be-0533-495c-a440-59542695521f)
+
+Now, Let's use **k8s** module but for this first we need **kubeconfig** file that we can get from Terminal instance provided by Openshift playground.
+
+To get kubeconfig file run ```oc config view --minify --flatten > kubeconfig.yml```
+
+![26](https://github.com/mannansiddiqui/Ansible-playbook-to-install-Nginx-ingress-operator-on-Openshift-cluster/assets/74168188/cedbf5d6-41a2-4383-a647-a03ff2e29767)
+
+Now, scp this kubeconfig file. This kubeconfig file remains same for all cluster in Openshift playground (According to my experience). You can find this kubeconfig file in this repo also.
+
+Now, let's create **Namespace**,**OperatorGroup**,and **Subscription** with Ansible playbook.
+
+Below are the operator-group.yml and subscription.yml manifest files. Now we just need to apply this using Ansible.
+
+**operator-group.yml**
+```
+apiVersion: operators.coreos.com/v1
+kind: OperatorGroup
+metadata:
+  name: operator-group
+  namespace: nginx-ingress 
+spec:
+  targetNamespaces:
+  - default
+```
+**subscription.yml**
+```
+apiVersion: operators.coreos.com/v1alpha1
+kind: Subscription
+metadata:
+  name: operator-subscription
+  namespace: nginx-ingress
+spec:
+  channel: alpha
+  installPlanApproval: Automatic
+  name: nginx-ingress-operator
+  source: certified-operators
+  sourceNamespace: openshift-marketplace
+  startingCSV: nginx-ingress-operator.v1.4.0
+```
+Let's add this in Ansible playbook also. Below is complete Ansible playbook to install Nginx ingress operator in Openshift cluster.
+
+
+```
+---
+- hosts: openshift
+  vars:
+    openshift_api_url: "https://api.crc.testing:6443" 
+    openshift_username: "admin"
+    openshift_password: "admin"
+  tasks:
+    - pip:
+        executable: "pip3.9"
+        name: "{{ item }}"
+        state: present
+      with_items: 
+        - requests
+        - requests-oauthlib
+        - kubernetes
+    - k8s_auth:
+        host: "{{ openshift_api_url }}"
+        username: "{{ openshift_username }}"
+        password: "{{ openshift_password }}"
+        validate_certs: no
+      register: k8s_auth_results
+
+    - k8s:
+        kubeconfig: "kubeconfig.yml"
+        name: "nginx-ingress"
+        kind: Namespace
+        state: present
+
+    - k8s: 
+        kubeconfig: "kubeconfig.yml"
+        state: present
+        src: "operator-group.yml"
+
+    - k8s:
+        kubeconfig: "kubeconfig.yml"
+        state: present
+        src: "subscription.yml"
+```
+
+Before i apply let's check in Openshift console nginx ingress operator is installed or not.
+
+![27](https://github.com/mannansiddiqui/Ansible-playbook-to-install-Nginx-ingress-operator-on-Openshift-cluster/assets/74168188/e7deea26-8006-4527-90c3-33a4d4b551ef)
+
+As you can see Nginx ingress operator is not installed. Now let's apply this playbook.
+
+![28](https://github.com/mannansiddiqui/Ansible-playbook-to-install-Nginx-ingress-operator-on-Openshift-cluster/assets/74168188/948abc47-a1a3-4a25-b81c-aff4908d180d)
+
