@@ -79,3 +79,8 @@ It will ask for username and password to open web console enter **admin** as use
 Create a inventory file i.e. ```/etc/ansible/hosts```
 
 ![image](https://github.com/mannansiddiqui/Ansible-playbook-to-install-Nginx-ingress-operator-on-Openshift-cluster/assets/74168188/adda1c5d-67ec-4243-8dd1-5c9246f15597)
+
+We will run ansible playbook on same host on which ansible is installed that will interact with Openshift cluster as we can't ssh to instance running Openshit cluster. When we run ansible playbook on same host it will interact with Openshift cluster using OC command line tool.
+
+#### Step-4: Write Ansible playbook
+
