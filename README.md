@@ -140,7 +140,10 @@ Now, Let's again try to run Ansible playbook.
 
 Again there is dependency error. Asking to install **requests-oauthlib** python library. Let's add this in playbook.
 
-![23](https://github.com/mannansiddiqui/Ansible-playbook-to-install-Nginx-ingress-operator-on-Openshift-cluster/assets/74168188/2e8a268e-e4b7-4c31-9dc3-ec442cc6e166)
+![23](https://github.com/mannansiddiqui/Ansible-playbook-to-install-Nginx-ingress-operator-on-Openshift-cluster/assets/74168188/4322b8a3-2892-4e6d-bee2-b086b431696f)
 
 Now, Let's again try to run Ansible playbook.
 
+![24](https://github.com/mannansiddiqui/Ansible-playbook-to-install-Nginx-ingress-operator-on-Openshift-cluster/assets/74168188/fa139af8-bf27-465f-9ab3-461cfb499a6d)
+
+There is issue in RHEL9 as i already installed **requests-oauthlib** python library but still i am getting this error. Now i am using CentOS 9.
