@@ -188,10 +188,10 @@ spec:
   name: nginx-ingress-operator
   source: certified-operators
   sourceNamespace: openshift-marketplace
-  startingCSV: nginx-ingress-operator.v1.4.0
+  startingCSV: nginx-ingress-operator.v1.4.1
 ```
+You can also check the version in Openshift console first and then modify last line in subscription.yml like in my case current version is 1.4.1.
 Let's add this in Ansible playbook also. Below is complete Ansible playbook to install Nginx ingress operator in Openshift cluster.
-
 
 ```
 ---
@@ -241,3 +241,8 @@ As you can see Nginx ingress operator is not installed. Now let's apply this pla
 
 ![28](https://github.com/mannansiddiqui/Ansible-playbook-to-install-Nginx-ingress-operator-on-Openshift-cluster/assets/74168188/948abc47-a1a3-4a25-b81c-aff4908d180d)
 
+![29](https://github.com/mannansiddiqui/Ansible-playbook-to-install-Nginx-ingress-operator-on-Openshift-cluster/assets/74168188/0cb897b2-22c7-41cf-8e1a-205e0142ded0)
+
+It's now successfully installed.
+
+### Thank You...
