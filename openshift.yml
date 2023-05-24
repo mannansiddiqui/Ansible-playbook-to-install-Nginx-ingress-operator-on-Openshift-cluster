@@ -1,0 +1,37 @@
+---
+- hosts: openshift
+  vars:
+    openshift_api_url: "https://api.crc.testing:6443" 
+    openshift_username: "admin"
+    openshift_password: "admin"
+  tasks:
+    - pip:
+        executable: "pip3.9"
+        name: "{{ item }}"
+        state: present
+      with_items: 
+        - requests
+        - requests-oauthlib
+        - kubernetes
+    - k8s_auth:
+        host: "{{ openshift_api_url }}"
+        username: "{{ openshift_username }}"
+        password: "{{ openshift_password }}"
+        validate_certs: no
+      register: k8s_auth_results
+
+    - k8s:
+        kubeconfig: "kubeconfig.yml"
+        name: "nginx-ingress"
+        kind: Namespace
+        state: present
+
+    - k8s: 
+        kubeconfig: "kubeconfig.yml"
+        state: present
+        src: "operator-group.yml"
+
+    - k8s:
+        kubeconfig: "kubeconfig.yml"
+        state: present
+        src: "subscription.yml"
