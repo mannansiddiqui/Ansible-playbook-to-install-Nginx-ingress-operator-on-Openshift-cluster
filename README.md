@@ -1,12 +1,13 @@
-# Ansible-playbook-to-install-Nginx-ingress-operator-on-Openshift-cluster
+# Ansible playbook to install the Nginx Ingress Operator on an OpenShift cluster
 
 #### Description:
 
-  - Create a VM/Instance and install Ansible on it.
-  - Create Openshift cluster
-  - Configure Ansible
+  - Create a VM/instance and install Ansible on it.
+  - Set up an OpenShift cluster.
+  - Configure Ansible.
+  - Write an Ansible playbook.
 
-#### Step-1: Create a VM/Instance and install Ansible on it
+#### Step-1: Create a VM/instance and install Ansible on it.
 
 Firstly, create a VM/Instance. I am using ACloudGuru PlayGround to create a VM.
 
@@ -58,7 +59,7 @@ Now, it's picked up also
 
 ![10](https://github.com/mannansiddiqui/Ansible-playbook-to-install-Nginx-ingress-operator-on-Openshift-cluster/assets/74168188/92e5fcd4-5dad-4649-ba6f-cb3e9a382b26)
 
-#### Step-2: Create Openshift cluster
+#### Step-2: Set up an OpenShift cluster.
 
 To create Openshift cluster you can use CRC i.e. [Code Ready Container](https://console.redhat.com/openshift/create/local) or you can use [Openshift payground](https://developers.redhat.com/courses/explore-openshift/openshift-playground)
 
@@ -74,7 +75,7 @@ It will ask for username and password to open web console enter **admin** as use
 
 ![13](https://github.com/mannansiddiqui/Ansible-playbook-to-install-Nginx-ingress-operator-on-Openshift-cluster/assets/74168188/8c55d5ff-d48f-4329-a5a0-b6beadf5d4b4)
 
-#### Step-3: Configure Ansible to run playbook on Openshift cluster
+#### Step-3: Configure Ansible.
 
 Create a inventory file i.e. ```/etc/ansible/hosts```
 
@@ -82,7 +83,7 @@ Create a inventory file i.e. ```/etc/ansible/hosts```
 
 We will run ansible playbook on same host on which ansible is installed that will interact with Openshift cluster as we can't ssh to instance running Openshit cluster. When we run ansible playbook on same host it will interact with Openshift cluster using OC command line tool.
 
-#### Step-4: Write Ansible playbook
+#### Step-4: Write an Ansible playbook.
 
 Firstly, we need to login inside openshift cluster. To login inside Openshift cluster, ansible has **k8s_auth** module or we can use **k8s** but if we use **k8s** module then everytime we need to pass **kubeconfig** file as parameter that we can get easily from Terminal provided by Openshift Playground.
 
